@@ -1,4 +1,4 @@
-/*
+
 package agh.cs.lab1;
 
 import agh.cs.lab2.*;
@@ -40,27 +40,11 @@ public class TestyIntegracyjneAnimal {
     void testParse1() throws Exception {
         String[] val ={};
         World.main(val);
-        String expected = new Vector2d(2,2).toString() + "N";
+        String expected = new Vector2d(2,2).toString();
         assertEquals(expected,out.toString());
     }
 
-    @Test
-    void testNaOrientacje() throws Exception {
-        IWorldMap ma = new RectangularMap(4,4);
-        Animal noweZwierze = new Animal(ma);
 
-        noweZwierze.move(MoveDirection.RIGHT);
-        assertEquals(MapDirection.EAST,noweZwierze.getDirection());
-
-        noweZwierze.move(MoveDirection.RIGHT);
-        assertEquals(MapDirection.SOUTH,noweZwierze.getDirection());
-
-        noweZwierze.move(MoveDirection.RIGHT);
-        assertEquals(MapDirection.WEST,noweZwierze.getDirection());
-
-        noweZwierze.move(MoveDirection.RIGHT);
-        assertEquals(MapDirection.NORTH,noweZwierze.getDirection());
-    }
     @Test
     void testNaPozycje() throws Exception {
         IWorldMap ma = new RectangularMap(4,4);
@@ -122,4 +106,3 @@ public class TestyIntegracyjneAnimal {
     }
 
 }
-*/

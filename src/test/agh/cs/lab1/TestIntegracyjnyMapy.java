@@ -1,18 +1,11 @@
 package agh.cs.lab1;
-
 import agh.cs.lab2.*;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-
-
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
-
 class TestyIntegracyjnyMapy {
 
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();

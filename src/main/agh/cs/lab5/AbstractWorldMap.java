@@ -3,40 +3,38 @@ import agh.cs.lab2.Vector2d;
 import agh.cs.lab3.Animal;
 import agh.cs.lab4.IWorldMap;
 import agh.cs.lab4.MapVisualizer;
-
+import agh.cs.lab7.IPositionChangeObserver;
 import java.util.*;
-
-public abstract class AbstractWorldMap implements IWorldMap {
-    public List<AbstractWorldMapElement> obiektyNaMapie = new LinkedList<>();
-    public final Vector2d LEFT = new Vector2d(0,0);
-    protected Vector2d TopRight;
+public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
+    protected final HashMap<Vector2d, AbstractWorldMapElement> mapFields = new HashMap<>();
+    protected static final Vector2d LEFT = new Vector2d(0,0);
     @Override
     public boolean isOccupied(Vector2d position) {
-        return objectAt(position) != Optional.empty();
+        return objectAt(position).isPresent();
     }
     @Override
-    public Object objectAt(Vector2d position) {
-        Iterator<AbstractWorldMapElement> it = this.obiektyNaMapie.iterator();
-        while(it.hasNext()){
-            AbstractWorldMapElement curr = it.next();
-            if(curr.getPosition().equals(position))
-                return curr;
+    public Optional<AbstractWorldMapElement> objectAt(Vector2d position) {
+        if(mapFields.get(position) == null){
+            return Optional.empty();
+        }else {
+            return Optional.of(mapFields.get(position));
         }
-        return Optional.empty();
     }
     @Override
     public boolean canMoveTo(Vector2d position){
-        return position.follows(new Vector2d(0,0)) && (!isOccupied(position) || objectAt(position) instanceof Grass);
+        return position.follows(LEFT) && (!isOccupied(position) || objectAt(position).get().isOverwritable());
     }
     @Override
-    public boolean place(Animal animal) {
-        if(canMoveTo(animal.getPosition())){
-            this.obiektyNaMapie.add(animal);
-            return true;
+    public void place(Animal animal) throws Exception{
+        if (canMoveTo(animal.getPosition())) {
+            positionChanged(animal.getPosition(), animal.getPosition());
+            this.mapFields.put(animal.getPosition(),animal);
+        }else {
+            throw new IllegalArgumentException(animal.getPosition() + " cos nie tak");
         }
-        else return false;
     }
     @Override
     public String toString(){ return new MapVisualizer(this).draw(LEFT,getTopRight()); }
-    abstract public Vector2d getTopRight();
+    abstract protected Vector2d getTopRight();
+    public abstract void positionChanged(Vector2d oldPosition, Vector2d newPosition);
 }

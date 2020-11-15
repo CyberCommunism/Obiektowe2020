@@ -1,7 +1,5 @@
 package agh.cs.lab4;
-
 import agh.cs.lab2.Vector2d;
-import agh.cs.lab4.IWorldMap;
 
 /**
  * The map visualizer converts the {@link IWorldMap} map into a string
@@ -10,7 +8,7 @@ import agh.cs.lab4.IWorldMap;
  * @author apohllo
  */
 public class MapVisualizer {
-    private static final String EMPTY_CELL = " ";
+    private static final String EMPTY_CELL = "           ";
     private static final String FRAME_SEGMENT = "-";
     private static final String CELL_SEGMENT = "|";
     public IWorldMap map;

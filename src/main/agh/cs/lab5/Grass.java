@@ -5,4 +5,9 @@ public class Grass extends AbstractWorldMapElement{
         super.position = position;
     }
     public String toString(){return "*";}
+
+    @Override
+    public boolean isOverwritable() {
+        return true;
+    }
 }

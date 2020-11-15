@@ -1,6 +1,8 @@
 package agh.cs.lab4;
 import agh.cs.lab2.Vector2d;
 import agh.cs.lab5.AbstractWorldMap;
+import agh.cs.lab5.AbstractWorldMapElement;
+
 public class RectangularMap extends AbstractWorldMap {
     private final Vector2d RIGHT;
     public RectangularMap(int x, int y){
@@ -13,4 +15,10 @@ public class RectangularMap extends AbstractWorldMap {
     }
     @Override
     public Vector2d getTopRight(){ return RIGHT; }
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        AbstractWorldMapElement g = mapFields.get(oldPosition);
+        mapFields.remove(oldPosition);
+        mapFields.put(newPosition,g);
+    }
 }

@@ -4,60 +4,61 @@ import agh.cs.lab2.MoveDirection;
 import agh.cs.lab2.Vector2d;
 import agh.cs.lab4.IWorldMap;
 import agh.cs.lab5.AbstractWorldMapElement;
-import agh.cs.lab5.Grass;
-import agh.cs.lab5.GrassField;
-
-import java.util.Iterator;
-
+import agh.cs.lab7.IPositionChangeObserver;
+import java.util.LinkedList;
+import java.util.List;
 public class Animal extends AbstractWorldMapElement {
-    private MapDirection orietationt = MapDirection.NORTH;
+    private MapDirection orientation = MapDirection.NORTH;
+    private List<IPositionChangeObserver> listOfObservers = new LinkedList<>();
     public Animal(IWorldMap map) throws Exception {
         this(map,new Vector2d(2,2));
     }
     public Animal(IWorldMap map, Vector2d initialPosition) throws Exception {
         super.map = map;
         super.position = initialPosition.add(new Vector2d(-1,-1));
-        if(!map.place(this)){
-            throw new Exception("nie da sie stowyrz zwierza");
+        try {
+            map.place(this);
+        } catch (Exception e) {
+            throw e;
         }
     }
     public String toString(){
-        return this.orietationt.toString();
+        return this.orientation.toString();
     }
     public void move(MoveDirection direction){
         switch (direction){
-            case RIGHT -> this.orietationt = this.orietationt.next();
-            case LEFT -> this.orietationt = this.orietationt.previous();
-            case FORWARD -> changePositionIfPosibble(this.orietationt.toUnitVector());
-            case BACKWARD -> changePositionIfPosibble(this.orietationt.toUnitVector().opposite());
+            case RIGHT -> {
+                this.orientation = this.orientation.next();
+            }
+            case LEFT ->{
+                this.orientation = this.orientation.previous();
+            }
+            case FORWARD -> {
+                changePositionIfpossible(this.orientation.toUnitVector());
+            }
+            case BACKWARD -> {
+                changePositionIfpossible(this.orientation.toUnitVector().opposite());
+            }
         }
     }
-    private void changePositionIfPosibble(Vector2d gdzie){
-        Vector2d nowyTestowy = this.position.add(gdzie);
-        if(map.canMoveTo(nowyTestowy)){
-            Object x = super.map.objectAt(nowyTestowy);
-            if(x instanceof Grass){
-                GrassField currMap = ((GrassField) super.map);
-                currMap.obiektyNaMapie.remove(x);
-                boolean flaga=false;
-                int randF = (int) (Math.random()*Math.sqrt(10 * currMap.ileTrawy));
-                int randS = (int) (Math.random()*Math.sqrt(10 * currMap.ileTrawy));
-                while (!flaga) {
-                    flaga = true;
-                    randF = (int) (Math.random()*Math.sqrt(10 * currMap.ileTrawy));
-                    randS = (int) (Math.random()*Math.sqrt(10 * currMap.ileTrawy));
-
-                    Iterator<AbstractWorldMapElement> it = currMap.obiektyNaMapie.iterator();
-                    while (it.hasNext())
-                        if(it.next().getPosition().equals(new Vector2d(randF,randS))){ flaga = false; }
-
-                    if(flaga)
-                        currMap.obiektyNaMapie.add(new Grass(new Vector2d(randF,randS)));
-
-                }
-                currMap.obiektyNaMapie.add(new Grass(new Vector2d(randF,randS)));
-            }
-            super.position = nowyTestowy;
+    private void changePositionIfpossible(Vector2d where){
+        Vector2d newTest = this.position.add(where);
+        if(map.canMoveTo(newTest)){
+            positionChanged(this.position,newTest);
+            super.position = newTest;
         }
+    }
+    @Override
+    public boolean isOverwritable() {
+        return false;
+    }
+    public void addObserver(IPositionChangeObserver observer){
+        this.listOfObservers.add(observer);
+    }
+    public void removeObserver(IPositionChangeObserver observer){
+        this.listOfObservers.remove(observer);
+    }
+    public void positionChanged(Vector2d oldPosition,Vector2d newPosition){
+        for(IPositionChangeObserver x:this.listOfObservers) x.positionChanged(oldPosition, newPosition);
     }
 }

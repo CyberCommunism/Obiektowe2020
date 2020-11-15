@@ -1,24 +1,28 @@
 package agh.cs.lab3;
-
 import agh.cs.lab2.MoveDirection;
-
-import java.util.Arrays;
-import java.util.Set;
-import java.util.stream.Stream;
-
 public class OptionsParser {
-    private final static Set VALU = Set.of("f","forward", "b","backward", "l","left", "r","right");
-    public static MoveDirection[] parse(String[] args){
-        Stream<String> our_stream = Arrays.stream(args);
-        return our_stream.filter(VALU::contains).map(OptionsParser::whatEn).toArray(MoveDirection[]::new);
+    public static MoveDirection[] parse(String[] args) throws Exception{
+        MoveDirection[] result = new MoveDirection[args.length];
+        MoveDirection curr = null;
+        int index = 0;
+        for(String x:args){
+            try{
+                curr = whatEn(x);
+            } catch (Exception e) {
+                throw e;
+            }
+            result[index] = curr;
+            index++;
+        }
+        return result;
     }
-    private static MoveDirection whatEn(String cha){
+    private static MoveDirection whatEn(String cha) throws Exception{
         return switch (cha){
             case "f","forward" ->MoveDirection.FORWARD;
             case "b","backward"->MoveDirection.BACKWARD;
             case "l","left"->MoveDirection.LEFT;
             case "r","right"->MoveDirection.RIGHT;
-            default -> throw new IllegalStateException("Unexpected value: " + cha);
+            default -> throw new IllegalArgumentException(cha  + " is not legal move specification");
         };
     }
 

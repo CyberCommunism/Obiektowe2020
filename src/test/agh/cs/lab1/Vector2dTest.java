@@ -6,11 +6,11 @@ class Vector2dTest {
     @Test
     void testToString() {
         Vector2d testowy = new Vector2d();
-        assertEquals("(0,0)", testowy.toString());
+        assertEquals("(1,1)", testowy.toString());
         Vector2d testowy1 = new Vector2d(2, 4);
-        assertEquals("(2,4)", testowy1.toString());
+        assertEquals("(3,5)", testowy1.toString());
         Vector2d testowy2 = new Vector2d(-1, -3);
-        assertEquals("(-1,-3)", testowy2.toString());
+        assertEquals("(0,-2)", testowy2.toString());
 
     }
     @Test
