@@ -5,11 +5,12 @@ import agh.cs.lab2.Vector2d;
 import agh.cs.lab4.IWorldMap;
 import agh.cs.lab5.AbstractWorldMapElement;
 import agh.cs.lab7.IPositionChangeObserver;
+
 import java.util.LinkedList;
 import java.util.List;
 public class Animal extends AbstractWorldMapElement {
     private MapDirection orientation = MapDirection.NORTH;
-    private List<IPositionChangeObserver> listOfObservers = new LinkedList<>();
+    private final List<IPositionChangeObserver> listOfObservers = new LinkedList<>();
     public Animal(IWorldMap map) throws Exception {
         this(map,new Vector2d(2,2));
     }
@@ -18,6 +19,7 @@ public class Animal extends AbstractWorldMapElement {
         super.position = initialPosition.add(new Vector2d(-1,-1));
         try {
             map.place(this);
+            positionChanged(this.position,this.position);
         } catch (Exception e) {
             throw e;
         }
@@ -59,6 +61,9 @@ public class Animal extends AbstractWorldMapElement {
         this.listOfObservers.remove(observer);
     }
     public void positionChanged(Vector2d oldPosition,Vector2d newPosition){
-        for(IPositionChangeObserver x:this.listOfObservers) x.positionChanged(oldPosition, newPosition);
+        for(IPositionChangeObserver x:this.listOfObservers)
+        {
+            x.positionChanged(oldPosition, newPosition);
+        }
     }
 }

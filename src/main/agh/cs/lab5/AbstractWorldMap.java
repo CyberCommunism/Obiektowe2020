@@ -6,14 +6,14 @@ import agh.cs.lab4.MapVisualizer;
 import agh.cs.lab7.IPositionChangeObserver;
 import java.util.*;
 public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
-    protected final HashMap<Vector2d, AbstractWorldMapElement> mapFields = new HashMap<>();
+    protected final HashMap<Vector2d, IMapElement> mapFields = new HashMap<>();
     protected static final Vector2d LEFT = new Vector2d(0,0);
     @Override
     public boolean isOccupied(Vector2d position) {
         return objectAt(position).isPresent();
     }
     @Override
-    public Optional<AbstractWorldMapElement> objectAt(Vector2d position) {
+    public Optional<IMapElement> objectAt(Vector2d position) {
         if(mapFields.get(position) == null){
             return Optional.empty();
         }else {
