@@ -11,12 +11,14 @@ public class World {
             String[] tab = {"f", "f", "r", "f","l","r","f"};
             MoveDirection[] directions = OptionsParser.parse(tab);
             IWorldMap map = new GrassField(2);
+
             Vector2d[] positions = {new Vector2d(2, 2),new Vector2d(1,1)};
             System.out.println(map);
             IEngine enegine = new SimulationEngine(directions, map, positions);
             System.out.println(map);
             enegine.run();
             System.out.println(map);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

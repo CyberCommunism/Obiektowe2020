@@ -22,6 +22,13 @@ public class GrassField extends AbstractWorldMap {
             }
         }
     }
+    public GrassField(int howManyGrasses, Vector2d[] tab){
+        this.howManyGrasses = howManyGrasses;
+        for(Vector2d y:tab){
+            Grass x = new Grass(y);
+            super.mapFields.put(y,x);
+        }
+    }
     public void upDate(){
         for(IPositionChangeObserver observer:this.listOfObserver){
             for(Vector2d x:super.mapFields.keySet()) observer.positionChanged(x, x);

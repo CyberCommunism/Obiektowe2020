@@ -23,10 +23,6 @@ public class SimulationEngine implements IEngine {
                     ((GrassField)map).addObserver(obs1);
                     ((GrassField)map).upDate();
                 }
-
-
-
-
                 newAnimal.addObserver(obs);
                 newAnimal.addObserver(obs1);
                 animals.add(newAnimal);
@@ -35,6 +31,9 @@ public class SimulationEngine implements IEngine {
             }
         }
     }
+
+
+
     @Override
     public void run() {
         Iterator<Animal> it = animals.iterator();
@@ -42,5 +41,12 @@ public class SimulationEngine implements IEngine {
             it.next().move(x);
             if(!it.hasNext()) it = animals.iterator();
         }
+    }
+    public String getListAsStrings(){
+        StringBuilder result = new StringBuilder();
+        for(Animal x:animals){
+            result.append(x.getPosition());
+        }
+        return result.toString();
     }
 }
